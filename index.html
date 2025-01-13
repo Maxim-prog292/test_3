@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/@c-frame/aframe-particle-system-component@1.2.x/dist/aframe-particle-system-component.min.js"></script>
+<!--     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-sky-background/dist/sky-background.umd.min.js"></script> -->
+  </head>
+  <body>
+    <style>
+      .load_ar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: black;
+        width: 100vw;
+        height: 100vh;
+        z-index: 99999 !important;
+        text-align: center;
+        color: #fff;
+        font-size: 48px;
+      }
+      #scene {
+        height: 90% !important;
+      }
+      button {
+        position: absolute;
+        width: 100px;
+        height: 50px;
+        top: -100px;
+        z-index: 1;
+        left: 50px;
+      }
+      .hide {
+        display: none;
+        opacity: 0;
+      }
+    </style>
+    
+    <div class="load_ar">
+      <p class="load_ar-text">
+        Загрузка...
+      </p>
+    </div>
+    
+    <a-scene id="scene">
+      <a-entity id="sphere" geometry="primitive: sphere"
+                material="color: #EFEFEF; shader: flat"
+                position="-300 0 300"
+                light=""
+                >
+      </a-entity>
+      <a-entity 
+          class="planet"
+          gltf-model="https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/mercury.gltf?v=1736763219589" 
+          scale="1.1 1.1 1.1"
+          rotation="0 0 0"
+          animation="property: rotation; easing: linear; dir: alternate; dur: 300000;  to: 0 720 0; loop: true"
+          position="0 0 0">
+      </a-entity>
+     
+      <a-sky-background top-color="#000" bottom-color="#000"></a-sky-background>
+
+      <a-entity id="light" light="type: ambient; color: #fff"></a-entity>
+      
+      <a-camera position="0 0 220" fov="90" ></a-camera>
+      
+      <a-assets>
+            <img id="sky" src="https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/8k_stars_milky_way.png?v=1735378887577">
+      </a-assets>
+      <a-sky src="#sky"></a-sky>
+      
+      <button class="button">
+        Следующая планета
+      </button>
+      
+    </a-scene>
+    
+    <script>
+      const planetsObject = {
+        sun: {
+          'scale': '1.1 1.1 1.1',
+          'gltfModel': 'https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/sun.glb?v=1735211797799'
+        },
+        merc: {
+          'scale': '35 35 35',
+          'gltfModel': 'https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/mercury.glb?v=1736756647545'
+        },
+        venus: {
+          'scale': '1.1 1.1 1.1',
+          'gltfModel': 'https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/venus.glb?v=1736762056284'
+        },
+        earth: {
+          'scale': '1.1 1.1 1.1',
+          'gltfModel': 'https://cdn.glitch.global/3109ca4d-2713-4595-96c0-4be0841be87f/earth.glb?v=1736762545976'
+        },
+      }
+      const planet = document.querySelector('.planet');
+      const planets = ['sun', 'merc', 'venus', 'earth', 'mars'];
+      let planetInc = 0;
+      let currentPlanet = 'sun';
+      const button = document.querySelector('.button');
+      
+//       const sun = document.querySelector('.sun');
+//       const windowOuterHeight = window.outerHeight;
+//       const windowOuterWidth = window.outerWidth
+      
+//       if (windowOuterHeight > 667 || windowOuterWidth < 344) {
+//         sun.setAttribute('scale', '0.8 0.8 0.8')
+//       }
+
+      button.addEventListener('click', () => {
+        currentPlanet = planets[++planetInc]
+        
+      })
+      function nextPlanet(object) {
+         planet.setAttribute('scale', object.scale)
+         planet.setAttribute('gltf-model', object.gltfModel)
+        console.log(object)
+      }
+      // nextPlanet(planetsObject.sun)
+      nextPlanet(planetsObject.earth)
+      
+    </script>
+  </body>
+</html>
